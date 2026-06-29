@@ -15,7 +15,7 @@ asserted=true   ESP32 GPIO high   MOSFET on    target line low
 asserted=false  ESP32 GPIO low    MOSFET off   target line released
 ```
 
-For direct wiring to the target button node, use open-drain mode and assert level `0` in project configuration.
+For direct wiring to the target button node, use open-drain mode and assert level `0` in project configuration. Detailed GPIO18/GPIO19 wiring assumptions are in [hardware_wiring.md](hardware_wiring.md).
 
 Line bit assignments:
 
@@ -148,4 +148,3 @@ Release everything:
 ```sh
 python3 tools/power_switch_client.py <esp32-ip> release-all
 ```
-

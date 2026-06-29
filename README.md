@@ -6,9 +6,11 @@ ESP-IDF firmware and a Python client for controlling two active-low target lines
 - K5 `SARADC0_BOOT`: ESP32 `GPIO19`
 - RGB status LED: ESP32-S3 `GPIO48`
 
-The target-side buttons short each signal to ground. This firmware defaults to driving external MOSFET gates: commanded target-line assertion drives the ESP32 GPIO high, turning the MOSFET on and pulling the target line low. Commanded release drives the GPIO low.
+The default hardware model is two external logic-level N-MOSFETs wired as low-side switches in parallel with the target buttons. `GPIO18` drives the K6 `RESETn` MOSFET gate, and `GPIO19` drives the K5 `SARADC0_BOOT` MOSFET gate.
 
-Connect ESP32 ground to target ground. If you wire the ESP32 directly to the target button node instead of using MOSFETs, change the configuration to open-drain and assert level `0`.
+In the default MOSFET configuration, commanded target-line assertion drives the ESP32 GPIO high, turning the MOSFET on and pulling the target line low. Commanded release drives the GPIO low, turning the MOSFET off and leaving the target pull-up/button circuit in control.
+
+Full wiring assumptions are documented in [docs/hardware_wiring.md](docs/hardware_wiring.md).
 
 ## Build And Flash
 
@@ -87,6 +89,7 @@ python3 tools/power_switch_client.py <esp32-ip> release reset
 ## UDP Protocol
 
 Full binary protocol reference: [docs/binary_protocol.md](docs/binary_protocol.md).
+Hardware polarity reference: [docs/hardware_wiring.md](docs/hardware_wiring.md).
 
 Requests use network byte order:
 
