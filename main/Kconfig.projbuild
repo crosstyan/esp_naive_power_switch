@@ -1,0 +1,88 @@
+menu "Power switch"
+
+    config POWER_SWITCH_WIFI_SSID
+        string "Wi-Fi SSID"
+        default "WH-iot"
+        help
+            Wi-Fi network used by the ESP32 control server.
+
+    config POWER_SWITCH_WIFI_PASSWORD
+        string "Wi-Fi password"
+        default "wh213215"
+        help
+            Wi-Fi password used by the ESP32 control server.
+
+    config POWER_SWITCH_UDP_PORT
+        int "UDP control port"
+        range 1 65535
+        default 44444
+        help
+            IPv4 UDP port listened on by the control server.
+
+    config POWER_SWITCH_RESET_GPIO
+        int "K6 RESETn GPIO"
+        range 0 39
+        default 18
+        help
+            ESP32 GPIO connected to the active-low K6 RESETn line.
+
+    config POWER_SWITCH_BOOT_GPIO
+        int "K5 SARADC0_BOOT GPIO"
+        range 0 39
+        default 19
+        help
+            ESP32 GPIO connected to the active-low K5 SARADC0_BOOT line.
+
+    config POWER_SWITCH_CONTROL_GPIO_OPEN_DRAIN
+        bool "Drive control GPIOs as open-drain"
+        default n
+        help
+            Enable this only when the ESP32 pins are connected directly to the
+            active-low target lines. Leave disabled when the ESP32 drives MOSFET
+            gates.
+
+    config POWER_SWITCH_CONTROL_GPIO_ASSERT_LEVEL
+        int "GPIO level used to assert the target line"
+        range 0 1
+        default 1
+        help
+            GPIO output level that makes the target K5/K6 line active-low.
+            Use 1 for a typical N-MOSFET gate driver. Use 0 for direct
+            open-drain wiring to the target line.
+
+    config POWER_SWITCH_STATUS_LED_ENABLE
+        bool "Enable GPIO48 RGB status LED"
+        default y
+        help
+            Drive a one-pixel addressable RGB status LED, such as the ESP32-S3
+            onboard LED commonly connected to GPIO48.
+
+    config POWER_SWITCH_STATUS_LED_GPIO
+        int "RGB status LED GPIO"
+        range 0 48
+        default 48
+        depends on POWER_SWITCH_STATUS_LED_ENABLE
+        help
+            GPIO connected to the addressable RGB LED data input.
+
+    config POWER_SWITCH_MIN_PULSE_MS
+        int "Minimum accepted pulse duration"
+        range 1 60000
+        default 50
+
+    config POWER_SWITCH_MAX_PULSE_MS
+        int "Maximum accepted pulse duration"
+        range 1 60000
+        default 10000
+
+    config POWER_SWITCH_DEFAULT_RESET_MS
+        int "Default RESETn pulse duration"
+        range 1 60000
+        default 300
+
+    config POWER_SWITCH_DEFAULT_BOOT_HOLD_MS
+        int "Default SARADC0_BOOT hold duration"
+        range 1 60000
+        default 1500
+
+endmenu
